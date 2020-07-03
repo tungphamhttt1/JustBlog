@@ -1,0 +1,58 @@
+﻿
+@model PagedList.IPagedList<FA.JustBlog.ViewModels.PostViewModels>
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "DisplayListPost";
+    Layout = "~/Areas/Identity/Views/Shared/_LayoutDashBoard.cshtml";
+}
+
+
+<h2>List Posts</h2>
+<p>
+    @Html.ActionLink("Create New", "AddPost")
+</p>
+
+<table class="table table-bordered thead-dark table-sm ">
+    <thead>
+        <tr class="d-flex">
+            <th class="col-3"> @Html.DisplayNameFor(model => model.FirstOrDefault().Title)</th>
+            @*<th class="col-3">@Html.DisplayNameFor(model => model.ShortDescription)</th>*@
+            <th class="col-2">@Html.DisplayNameFor(model => model.FirstOrDefault().Published)</th>
+            <th class="col-2">@Html.DisplayNameFor(model => model.FirstOrDefault().PostedOn)</th>
+            <th class="col-3">@Html.DisplayNameFor(model => model.FirstOrDefault().Modified)</th>
+            @*<th class="col-2">@Html.DisplayNameFor(model => model.TotalRate)</th>*@
+            <th class="col-2"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr class="d-flex">
+                <td class="col-sm-3">@Html.DisplayFor(modelItem => item.Title)</td>
+                @*<td class="col-sm-3">@Html.DisplayFor(modelItem => item.ShortDescription)</td>*@
+                <td class="col-sm-2">@Html.DisplayFor(modelItem => item.Published)</td>
+                <td class="col-sm-2">@Html.DisplayFor(modelItem => item.PostedOn)</td>
+                <td class="col-sm-3">@Html.DisplayFor(modelItem => item.Modified)</td>
+                @*<td class="col-sm-2">@Html.DisplayFor(modelItem => item.TotalRate)</td>*@
+                <td class="col-sm-2 text-center">
+                    @using (Html.BeginForm("Delete", "Post", new { id = item.Id }, FormMethod.Post))
+                    {
+                        <a href="@Url.Action("EditPost","Post",new { Id = item.Id})" class="btn btn-primary">Edit</a>
+                        <button type="submit" onclick="return confirm('Are you sure to delete this post?');" class="btn btn-danger">Delete</button>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<br />
+
+
+<br />
+Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) / @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page }))
+
+

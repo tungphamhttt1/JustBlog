@@ -1,0 +1,35 @@
+﻿@model IEnumerable<FA.JustBlog.Core.Models.Post>
+<h2>All Posts!</h2>
+@foreach (var item in Model)
+{
+    <div class="post-preview">
+    @*<a href='@Url.Action("Details", "Post",
+new { id = item.PostId })'>*@
+    <a href='/post/details/@item.Id'>
+            <h2 class="post-title">
+                @item.Title
+            </h2>
+            <h3 class="post-subtitle">
+                @item.ShortDescription
+            </h3>
+        </a>
+        <p class="post-meta">
+            Posted by
+            <a href="#">Start Bootstrap</a>
+            on September 24, 2019
+        </p>
+    </div>
+    <hr>
+}
+
+<!-- Pager -->
+<div class="clearfix">
+    <a class="btn btn-primary float-right" href="#">Older Posts &rarr;</a>
+</div>
+
+
+
+
+
+
+

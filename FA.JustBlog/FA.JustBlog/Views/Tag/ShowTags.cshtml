@@ -1,0 +1,49 @@
+﻿@model PagedList.IPagedList<Tag>
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "ShowTags";
+    Layout = "~/Areas/Identity/Views/Shared/_LayoutDashBoard.cshtml";
+}
+
+<h2>Show Tags</h2>
+<p>
+    @Html.ActionLink("Create New", "AddTag")
+</p>
+<table class="table table-bordered thead-dark table-sm ">
+    <thead>
+        <tr class="d-flex">
+            <th class="col-3">#</th>
+            <th class="col-2">@Html.DisplayNameFor(model => model.FirstOrDefault().Name)</th>
+            <th class="col-3">@Html.DisplayNameFor(model => model.FirstOrDefault().Description)</th>
+            <th class="col-4"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr class="d-flex">
+                <td class="col-sm-3">@Html.DisplayFor(modelItem => item.Id)</td>
+                @*<td class="col-sm-3">@Html.DisplayFor(modelItem => item.ShortDescription)</td>*@
+                <td class="col-sm-2">@Html.DisplayFor(modelItem => item.Name)</td>
+                <td class="col-sm-3">@Html.DisplayFor(modelItem => item.Description)</td>
+                @*<td class="col-sm-2">@Html.DisplayFor(modelItem => item.TotalRate)</td>*@
+                <td class="col-sm-4 text-center">
+                    @using (Html.BeginForm("Delete", "Tag", new { tagId = item.Id }, FormMethod.Post))
+                    {
+                        <a href="@Url.Action("EditTag","Tag",new { tagId = item.Id})" class="btn btn-primary">Edit</a>
+                        <button type="submit" onclick="return confirm('Are you sure to delete this tag?');" class="btn btn-danger">Delete</button>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+<br />
+Trang @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) / @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("ShowTags",
+    new { page }))
+
